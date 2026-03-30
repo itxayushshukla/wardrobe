@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayush Wardrobe — 20 Outfits</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0e0e0c;
+    --surface: #161614;
+    --surface2: #1c1c1a;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0ede6;
+    --muted: #8a8880;
+    --accent: #c9a96e;
+    --casual: #7b9e7a;
+    --oldmoney: #c9a96e;
+    --formal: #9b9b9b;
+    --sport: #c0544a;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+
+  .hero { position: relative; padding: 72px 48px 56px; border-bottom: 1px solid var(--border); overflow: hidden; }
+  .hero::before { content:''; position:absolute; top:-80px; right:-80px; width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(201,169,110,0.07) 0%,transparent 70%); pointer-events:none; }
+  .hero-label { font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+  .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(48px,8vw,82px); font-weight:300; line-height:1.0; color:var(--text); margin-bottom:8px; }
+  .hero h1 em { font-style:italic; color:var(--accent); }
+  .hero-sub { color:var(--muted); font-size:13px; margin-top:14px; max-width:300px; line-height:1.7; }
+  .hero-stats { display:flex; gap:36px; margin-top:36px; flex-wrap:wrap; }
+  .stat { display:flex; flex-direction:column; gap:4px; }
+  .stat-num { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:var(--text); line-height:1; }
+  .stat-label { font-size:10px; text-transform:uppercase; letter-spacing:0.15em; color:var(--muted); }
+
+  .filters-bar { display:flex; gap:6px; padding:18px 48px; border-bottom:1px solid var(--border); flex-wrap:wrap; align-items:center; position:sticky; top:0; background:rgba(14,14,12,0.95); backdrop-filter:blur(14px); z-index:100; }
+  .filters-label { font-size:10px; text-transform:uppercase; letter-spacing:0.15em; color:var(--muted); margin-right:6px; }
+  .fbtn { padding:5px 16px; border-radius:99px; border:1px solid var(--border2); background:transparent; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:12px; cursor:pointer; transition:all 0.18s; }
+  .fbtn:hover { border-color:var(--accent); color:var(--accent); }
+  .fbtn.active { background:var(--accent); border-color:var(--accent); color:#0e0e0c; font-weight:500; }
+  .fbtn[data-f="casual"].active { background:var(--casual); border-color:var(--casual); }
+  .fbtn[data-f="oldmoney"].active { background:var(--oldmoney); border-color:var(--oldmoney); }
+  .fbtn[data-f="formal"].active { background:var(--formal); border-color:var(--formal); color:#0e0e0c; }
+  .fbtn[data-f="sport"].active { background:var(--sport); border-color:var(--sport); }
+  .count-pill { margin-left:auto; font-size:11px; color:var(--muted); padding:4px 12px; border-radius:99px; border:1px solid var(--border); }
+
+  .outfits-section { padding:32px 48px 64px; }
+  .outfit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:18px; overflow:hidden; transition:border-color 0.2s,transform 0.2s; animation:fadeIn 0.4s ease both; }
+  .card:hover { transform:translateY(-3px); border-color:var(--border2); }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .card.hidden { display:none; }
+
+  .card-visual { width:100%; height:210px; background:var(--surface2); display:flex; align-items:center; justify-content:center; }
+  .card-visual svg { width:100%; height:100%; display:block; }
+
+  .card-accent { height:2px; }
+  .card[data-v="casual"] .card-accent { background:var(--casual); }
+  .card[data-v="oldmoney"] .card-accent { background:var(--oldmoney); }
+  .card[data-v="formal"] .card-accent { background:var(--formal); }
+  .card[data-v="sport"] .card-accent { background:var(--sport); }
+
+  .card-body { padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; }
+  .card-top { display:flex; align-items:center; justify-content:space-between; }
+  .card-num { font-family:'Cormorant Garamond',serif; font-size:13px; color:var(--muted); }
+  .badge { font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:0.12em; padding:3px 10px; border-radius:99px; }
+  .badge-casual { background:rgba(123,158,122,0.15); color:#a8c4a7; border:1px solid rgba(123,158,122,0.25); }
+  .badge-oldmoney { background:rgba(201,169,110,0.12); color:#d4b87e; border:1px solid rgba(201,169,110,0.22); }
+  .badge-formal { background:rgba(155,155,155,0.1); color:#b8b8b8; border:1px solid rgba(155,155,155,0.2); }
+  .badge-sport { background:rgba(192,84,74,0.12); color:#d47870; border:1px solid rgba(192,84,74,0.22); }
+  .card-name { font-family:'Cormorant Garamond',serif; font-size:21px; font-weight:300; line-height:1.2; color:var(--text); }
+  .card-pieces { font-size:12px; color:var(--muted); line-height:1.8; }
+  .card-tip { font-size:11px; color:rgba(255,255,255,0.28); font-style:italic; line-height:1.6; padding-top:10px; border-top:1px solid var(--border); }
+
+  footer { padding:28px 48px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  footer p { font-size:11px; color:var(--muted); }
+  footer em { font-style:italic; font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--muted); }
+
+  @media(max-width:600px){
+    .hero,.filters-bar,.outfits-section{padding-left:20px;padding-right:20px;}
+    .outfit-grid{grid-template-columns:1fr;}
+    footer{padding:24px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-label">Ayush Wardrobe</div>
+  <h1>My<br><em>Outfits</em></h1>
+  <p class="hero-sub">Every combination from my wardrobe, styled and categorised.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">20</div><div class="stat-label">Total Outfits</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Casual</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Old Money</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Formal</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">Sport</div></div>
+  </div>
+</header>
+
+<div class="filters-bar">
+  <span class="filters-label">Filter</span>
+  <button class="fbtn active" data-f="all" onclick="filter('all',this)">All</button>
+  <button class="fbtn" data-f="casual" onclick="filter('casual',this)">Casual</button>
+  <button class="fbtn" data-f="oldmoney" onclick="filter('oldmoney',this)">Old Money</button>
+  <button class="fbtn" data-f="formal" onclick="filter('formal',this)">Formal</button>
+  <button class="fbtn" data-f="sport" onclick="filter('sport',this)">Sport</button>
+  <span class="count-pill" id="count">20 outfits</span>
+</div>
+
+<section class="outfits-section">
+<div class="outfit-grid" id="grid">
+
+<!-- Each SVG = flat-lay style: top garment upper half, bottom garment lower half, shoes at bottom -->
+
+<!-- 01 Black Tee + White Chino -->
+<div class="card" data-v="casual" style="animation-delay:.02s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#181816"/>
+    <g opacity="0.18"><line x1="0" y1="0" x2="300" y2="210" stroke="#fff" stroke-width="0.5"/><line x1="60" y1="0" x2="300" y2="140" stroke="#fff" stroke-width="0.5"/><line x1="0" y1="70" x2="230" y2="210" stroke="#fff" stroke-width="0.5"/></g>
+    <!-- tee body -->
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#222222"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#1e1e1e"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#1e1e1e"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#333" stroke-width="1.5"/>
+    <!-- chino -->
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#e0dcd2"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#d2cec4" stroke-width="1.2"/>
+    <!-- shoes -->
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#aaaaaa"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">01</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">Black Tee &amp; White Chino</div>
+    <div class="card-pieces">Black T-shirt · White chino pants</div>
+    <div class="card-tip">Front-tuck the tee for a polished casual look.</div>
+  </div>
+</div>
+
+<!-- 02 Black Tee + Green Chino -->
+<div class="card" data-v="casual" style="animation-delay:.04s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#181816"/>
+    <g opacity="0.15"><line x1="0" y1="0" x2="300" y2="210" stroke="#4a7c59" stroke-width="0.8"/><line x1="150" y1="0" x2="300" y2="100" stroke="#4a7c59" stroke-width="0.5"/></g>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#222222"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#1e1e1e"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#1e1e1e"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#4a7c59"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#4a7c59"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#3e6b4c"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#375f42" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">02</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">Black Tee &amp; Green Chino</div>
+    <div class="card-pieces">Black T-shirt · Green chino pants</div>
+    <div class="card-tip">Earthy and easy — great for afternoon outings.</div>
+  </div>
+</div>
+
+<!-- 03 Black Tee + Linen -->
+<div class="card" data-v="oldmoney" style="animation-delay:.06s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#18181600"/>
+    <rect width="300" height="210" fill="#1a1916"/>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#222222"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#1e1e1e"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#1e1e1e"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#dad6ca"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#c8c4b8" stroke-width="1"/>
+    <line x1="108" y1="128" x2="108" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="117" y1="128" x2="117" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="162" y1="128" x2="162" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="171" y1="128" x2="171" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">03</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Black Tee &amp; Linen</div>
+    <div class="card-pieces">Black T-shirt · White linen pants</div>
+    <div class="card-tip">Linen elevates a simple tee into old money territory.</div>
+  </div>
+</div>
+
+<!-- 04 Black Tee + Blue Jeans -->
+<div class="card" data-v="casual" style="animation-delay:.08s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#18181a"/>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#222222"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#1e1e1e"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#1e1e1e"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#333" stroke-width="1.5"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#2f4e72"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#2a4468" stroke-width="1.2"/>
+    <line x1="108" y1="136" x2="138" y2="136" stroke="#4d6a90" stroke-width="0.8"/>
+    <line x1="162" y1="136" x2="192" y2="136" stroke="#4d6a90" stroke-width="0.8"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#2a2a2a"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#2a2a2a"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">04</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">Black Tee &amp; Blue Jeans</div>
+    <div class="card-pieces">Black T-shirt · Blue straight jeans</div>
+    <div class="card-tip">The classic. Clean shoes make it look intentional.</div>
+  </div>
+</div>
+
+<!-- 05 White Tee + Green Chino -->
+<div class="card" data-v="casual" style="animation-delay:.10s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#18181600"/>
+    <rect width="300" height="210" fill="#151714"/>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#f0f0ee"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#e8e8e6"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#e8e8e6"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#d8d8d6" stroke-width="1.5"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#4a7c59"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#4a7c59"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#3e6b4c"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#375f42" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#aaaaaa"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">05</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">White Tee &amp; Green Chino</div>
+    <div class="card-pieces">White T-shirt · Green chino pants</div>
+    <div class="card-tip">Fresh and clean. Leave untucked.</div>
+  </div>
+</div>
+
+<!-- 06 White Tee + Blue Jeans -->
+<div class="card" data-v="casual" style="animation-delay:.12s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#14151a"/>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#f0f0ee"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#e8e8e6"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#e8e8e6"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#d8d8d6" stroke-width="1.5"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#2f4e72"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#2a4468" stroke-width="1.2"/>
+    <line x1="108" y1="136" x2="138" y2="136" stroke="#4d6a90" stroke-width="0.8"/>
+    <line x1="162" y1="136" x2="192" y2="136" stroke="#4d6a90" stroke-width="0.8"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#aaaaaa"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">06</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">White Tee &amp; Blue Jeans</div>
+    <div class="card-pieces">White T-shirt · Blue straight jeans</div>
+    <div class="card-tip">Timeless combo. Works every single day.</div>
+  </div>
+</div>
+
+<!-- 07 White Tee + Grey Jeans (baggy) -->
+<div class="card" data-v="casual" style="animation-delay:.14s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#161616"/>
+    <path d="M90,100 L90,30 L112,14 L150,34 L188,14 L210,30 L210,100 Z" fill="#f0f0ee"/>
+    <path d="M90,30 L70,80 L92,84 L90,30" fill="#e8e8e6"/>
+    <path d="M210,30 L230,80 L208,84 L210,30" fill="#e8e8e6"/>
+    <path d="M130,26 Q150,46 170,26" fill="none" stroke="#d8d8d6" stroke-width="1.5"/>
+    <!-- baggy — wider legs -->
+    <rect x="92" y="118" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="154" y="118" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="89" y="110" width="122" height="18" rx="5" fill="#6a6a6a"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#5c5c5c" stroke-width="1.2"/>
+    <path d="M87,196 Q118,190 144,196 L144,202 Q118,206 87,202 Z" fill="#aaaaaa"/>
+    <path d="M156,196 Q182,190 213,196 L213,202 Q182,206 156,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">07</span><span class="badge badge-casual">Casual</span></div>
+    <div class="card-name">White Tee &amp; Grey Jeans</div>
+    <div class="card-pieces">White T-shirt · Grey baggy jeans</div>
+    <div class="card-tip">Tonal and relaxed. Let the volume breathe.</div>
+  </div>
+</div>
+
+<!-- 08 White Shirt + Blue Jeans -->
+<div class="card" data-v="oldmoney" style="animation-delay:.16s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#14151a"/>
+    <!-- shirt with collar -->
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#f0f0ee"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#e8e8e6"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#e8e8e6"/>
+    <!-- collar points -->
+    <polygon points="150,34 134,56 150,48" fill="#e0e0de"/>
+    <polygon points="150,34 166,56 150,48" fill="#e0e0de"/>
+    <!-- buttons -->
+    <circle cx="150" cy="60" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="74" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="88" r="2" fill="#ccccca"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#2f4e72"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#2a4468" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">08</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">White Shirt &amp; Blue Jeans</div>
+    <div class="card-pieces">White shirt (tucked) · Blue straight jeans</div>
+    <div class="card-tip">Roll sleeves once. Add a leather watch.</div>
+  </div>
+</div>
+
+<!-- 09 White Shirt + Grey Jeans -->
+<div class="card" data-v="oldmoney" style="animation-delay:.18s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#161616"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#f0f0ee"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#e8e8e6"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#e8e8e6"/>
+    <polygon points="150,34 134,56 150,48" fill="#e0e0de"/>
+    <polygon points="150,34 166,56 150,48" fill="#e0e0de"/>
+    <circle cx="150" cy="60" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="74" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="88" r="2" fill="#ccccca"/>
+    <rect x="92" y="118" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="154" y="118" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="89" y="110" width="122" height="18" rx="5" fill="#6a6a6a"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#5c5c5c" stroke-width="1.2"/>
+    <path d="M87,196 Q118,190 144,196 L144,202 Q118,206 87,202 Z" fill="#7a6550"/>
+    <path d="M156,196 Q182,190 213,196 L213,202 Q182,206 156,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">09</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">White Shirt &amp; Grey Jeans</div>
+    <div class="card-pieces">White shirt · Grey baggy jeans</div>
+    <div class="card-tip">Contrast in texture — crisp shirt, relaxed jeans.</div>
+  </div>
+</div>
+
+<!-- 10 White Shirt + Black Formal -->
+<div class="card" data-v="formal" style="animation-delay:.20s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#111110"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#f0f0ee"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#e8e8e6"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#e8e8e6"/>
+    <polygon points="150,34 134,56 150,48" fill="#e0e0de"/>
+    <polygon points="150,34 166,56 150,48" fill="#e0e0de"/>
+    <circle cx="150" cy="60" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="74" r="2" fill="#ccccca"/>
+    <circle cx="150" cy="88" r="2" fill="#ccccca"/>
+    <!-- formal trousers - narrow cut -->
+    <rect x="106" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="154" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="103" y="110" width="94" height="18" rx="4" fill="#161616"/>
+    <line x1="150" y1="128" x2="150" y2="188" stroke="#2a2a2a" stroke-width="1"/>
+    <!-- side seam highlight -->
+    <line x1="106" y1="120" x2="106" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <line x1="194" y1="120" x2="194" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <!-- oxford shoes -->
+    <path d="M97,196 Q122,190 143,196 L143,204 Q122,208 97,204 Z" fill="#1c1c1c"/>
+    <path d="M157,196 Q178,190 203,196 L203,204 Q178,208 157,204 Z" fill="#1c1c1c"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">10</span><span class="badge badge-formal">Formal</span></div>
+    <div class="card-name">White Shirt &amp; Black Formal</div>
+    <div class="card-pieces">White shirt (tucked) · Black formal pants</div>
+    <div class="card-tip">Classic power look. Iron everything sharp.</div>
+  </div>
+</div>
+
+<!-- 11 Dark Blue Shirt + White Chino -->
+<div class="card" data-v="oldmoney" style="animation-delay:.22s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#111318"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#1a3a5c"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#142e4a"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#142e4a"/>
+    <polygon points="150,34 134,56 150,48" fill="#0e2236"/>
+    <polygon points="150,34 166,56 150,48" fill="#0e2236"/>
+    <circle cx="150" cy="60" r="2" fill="#0a1c2e"/>
+    <circle cx="150" cy="74" r="2" fill="#0a1c2e"/>
+    <circle cx="150" cy="88" r="2" fill="#0a1c2e"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#e0dcd2"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#d2cec4" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">11</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Dark Blue Shirt &amp; White Chino</div>
+    <div class="card-pieces">Dark blue shirt · White chino pants</div>
+    <div class="card-tip">Half-tuck and loafers — understated elegance.</div>
+  </div>
+</div>
+
+<!-- 12 Dark Blue Shirt + Linen -->
+<div class="card" data-v="oldmoney" style="animation-delay:.24s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#111318"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#1a3a5c"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#142e4a"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#142e4a"/>
+    <polygon points="150,34 134,56 150,48" fill="#0e2236"/>
+    <polygon points="150,34 166,56 150,48" fill="#0e2236"/>
+    <circle cx="150" cy="60" r="2" fill="#0a1c2e"/>
+    <circle cx="150" cy="74" r="2" fill="#0a1c2e"/>
+    <circle cx="150" cy="88" r="2" fill="#0a1c2e"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#dad6ca"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#c8c4b8" stroke-width="1"/>
+    <line x1="108" y1="128" x2="108" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="117" y1="128" x2="117" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="162" y1="128" x2="162" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="171" y1="128" x2="171" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">12</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Dark Blue Shirt &amp; Linen</div>
+    <div class="card-pieces">Dark blue shirt · White linen pants</div>
+    <div class="card-tip">Rich navy against breezy linen is peak old money.</div>
+  </div>
+</div>
+
+<!-- 13 Maroon Shirt + White Chino -->
+<div class="card" data-v="oldmoney" style="animation-delay:.26s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#160f10"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#7b1c2e"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#621626"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#621626"/>
+    <polygon points="150,34 134,56 150,48" fill="#4e0e1c"/>
+    <polygon points="150,34 166,56 150,48" fill="#4e0e1c"/>
+    <circle cx="150" cy="60" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="74" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="88" r="2" fill="#3a0a14"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#e0dcd2"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#d2cec4" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">13</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Maroon Shirt &amp; White Chino</div>
+    <div class="card-pieces">Maroon shirt · White chino pants</div>
+    <div class="card-tip">Warm, rich palette — tuck in and half-sleeve roll.</div>
+  </div>
+</div>
+
+<!-- 14 Maroon Shirt + Linen -->
+<div class="card" data-v="oldmoney" style="animation-delay:.28s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#160f10"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#7b1c2e"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#621626"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#621626"/>
+    <polygon points="150,34 134,56 150,48" fill="#4e0e1c"/>
+    <polygon points="150,34 166,56 150,48" fill="#4e0e1c"/>
+    <circle cx="150" cy="60" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="74" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="88" r="2" fill="#3a0a14"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#dad6ca"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#c8c4b8" stroke-width="1"/>
+    <line x1="108" y1="128" x2="108" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="117" y1="128" x2="117" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="162" y1="128" x2="162" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="171" y1="128" x2="171" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">14</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Maroon Shirt &amp; Linen</div>
+    <div class="card-pieces">Maroon shirt · White linen pants</div>
+    <div class="card-tip">Best outfit for lunches and evening walks.</div>
+  </div>
+</div>
+
+<!-- 15 Maroon Shirt + Black Formal -->
+<div class="card" data-v="formal" style="animation-delay:.30s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#111010"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#7b1c2e"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#621626"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#621626"/>
+    <polygon points="150,34 134,56 150,48" fill="#4e0e1c"/>
+    <polygon points="150,34 166,56 150,48" fill="#4e0e1c"/>
+    <circle cx="150" cy="60" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="74" r="2" fill="#3a0a14"/>
+    <circle cx="150" cy="88" r="2" fill="#3a0a14"/>
+    <rect x="106" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="154" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="103" y="110" width="94" height="18" rx="4" fill="#161616"/>
+    <line x1="150" y1="128" x2="150" y2="188" stroke="#2a2a2a" stroke-width="1"/>
+    <line x1="106" y1="120" x2="106" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <line x1="194" y1="120" x2="194" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <path d="M97,196 Q122,190 143,196 L143,204 Q122,208 97,204 Z" fill="#1c1c1c"/>
+    <path d="M157,196 Q178,190 203,196 L203,204 Q178,208 157,204 Z" fill="#1c1c1c"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">15</span><span class="badge badge-formal">Formal</span></div>
+    <div class="card-name">Maroon Shirt &amp; Black Formal</div>
+    <div class="card-pieces">Maroon shirt · Black formal pants</div>
+    <div class="card-tip">Bold formal look. Great for evening events.</div>
+  </div>
+</div>
+
+<!-- 16 Black Shirt + White Chino -->
+<div class="card" data-v="oldmoney" style="animation-delay:.32s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#161614"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#2a2a2a"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#222222"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#222222"/>
+    <polygon points="150,34 134,56 150,48" fill="#1e1e1e"/>
+    <polygon points="150,34 166,56 150,48" fill="#1e1e1e"/>
+    <circle cx="150" cy="60" r="2" fill="#383838"/>
+    <circle cx="150" cy="74" r="2" fill="#383838"/>
+    <circle cx="150" cy="88" r="2" fill="#383838"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#ede9de"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#e0dcd2"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#d2cec4" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">16</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Black Shirt &amp; White Chino</div>
+    <div class="card-pieces">Black shirt · White chino pants</div>
+    <div class="card-tip">High contrast — clean, minimal, intentional.</div>
+  </div>
+</div>
+
+<!-- 17 Black Shirt + Linen -->
+<div class="card" data-v="oldmoney" style="animation-delay:.34s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#161614"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#2a2a2a"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#222222"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#222222"/>
+    <polygon points="150,34 134,56 150,48" fill="#1e1e1e"/>
+    <polygon points="150,34 166,56 150,48" fill="#1e1e1e"/>
+    <circle cx="150" cy="60" r="2" fill="#383838"/>
+    <circle cx="150" cy="74" r="2" fill="#383838"/>
+    <circle cx="150" cy="88" r="2" fill="#383838"/>
+    <rect x="100" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="154" y="118" width="46" height="68" rx="5" fill="#e8e4d8"/>
+    <rect x="97" y="110" width="106" height="18" rx="5" fill="#dad6ca"/>
+    <line x1="150" y1="128" x2="150" y2="186" stroke="#c8c4b8" stroke-width="1"/>
+    <line x1="108" y1="128" x2="108" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="117" y1="128" x2="117" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="162" y1="128" x2="162" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <line x1="171" y1="128" x2="171" y2="186" stroke="#d8d4c8" stroke-width="0.5" stroke-dasharray="2,5"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#7a6550"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#7a6550"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">17</span><span class="badge badge-oldmoney">Old Money</span></div>
+    <div class="card-name">Black Shirt &amp; Linen</div>
+    <div class="card-pieces">Black shirt · White linen pants</div>
+    <div class="card-tip">Dramatic contrast with a refined, airy texture.</div>
+  </div>
+</div>
+
+<!-- 18 All Black Formal -->
+<div class="card" data-v="formal" style="animation-delay:.36s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#0e0e0c"/>
+    <!-- subtle gold shimmer background -->
+    <circle cx="150" cy="60" r="80" fill="#c9a96e" opacity="0.03"/>
+    <path d="M92,102 L92,32 L110,16 L150,36 L190,16 L208,32 L208,102 Z" fill="#2a2a2a"/>
+    <path d="M92,32 L72,82 L94,86 L92,32" fill="#222222"/>
+    <path d="M208,32 L228,82 L206,86 L208,32" fill="#222222"/>
+    <polygon points="150,34 134,56 150,48" fill="#1e1e1e"/>
+    <polygon points="150,34 166,56 150,48" fill="#1e1e1e"/>
+    <!-- gold buttons for drama -->
+    <circle cx="150" cy="60" r="2.5" fill="#c9a96e" opacity="0.8"/>
+    <circle cx="150" cy="74" r="2.5" fill="#c9a96e" opacity="0.8"/>
+    <circle cx="150" cy="88" r="2.5" fill="#c9a96e" opacity="0.8"/>
+    <rect x="106" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="154" y="118" width="40" height="70" rx="4" fill="#1e1e1e"/>
+    <rect x="103" y="110" width="94" height="18" rx="4" fill="#161616"/>
+    <!-- gold belt buckle -->
+    <rect x="140" y="113" width="20" height="5" rx="2" fill="#c9a96e" opacity="0.7"/>
+    <line x1="150" y1="128" x2="150" y2="188" stroke="#2e2e2e" stroke-width="1"/>
+    <line x1="106" y1="120" x2="106" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <line x1="194" y1="120" x2="194" y2="188" stroke="#2c2c2c" stroke-width="0.8"/>
+    <path d="M97,196 Q122,190 143,196 L143,204 Q122,208 97,204 Z" fill="#1c1c1c"/>
+    <path d="M157,196 Q178,190 203,196 L203,204 Q178,208 157,204 Z" fill="#1c1c1c"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">18</span><span class="badge badge-formal">Formal</span></div>
+    <div class="card-name">All Black Formal</div>
+    <div class="card-pieces">Black shirt · Black formal pants</div>
+    <div class="card-tip">The boldest look. Save for evenings and special occasions.</div>
+  </div>
+</div>
+
+<!-- 19 RCB Jersey + Blue Jeans -->
+<div class="card" data-v="sport" style="animation-delay:.38s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#120e0e"/>
+    <!-- jersey with number area -->
+    <path d="M86,104 L86,28 L108,12 L150,36 L192,12 L214,28 L214,104 Z" fill="#cc0000"/>
+    <path d="M86,28 L64,82 L88,88 L86,28" fill="#b00000"/>
+    <path d="M214,28 L236,82 L212,88 L214,28" fill="#b00000"/>
+    <!-- V collar -->
+    <path d="M136,28 Q150,52 164,28" fill="none" stroke="#8a0000" stroke-width="2.5"/>
+    <!-- gold stripe -->
+    <rect x="86" y="64" width="128" height="7" fill="#c9a96e" opacity="0.95"/>
+    <!-- number patch -->
+    <rect x="126" y="72" width="48" height="28" rx="4" fill="#aa0000" opacity="0.6"/>
+    <text x="150" y="91" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#f8eedc" letter-spacing="1.5">RCB</text>
+    <!-- jeans -->
+    <rect x="100" y="120" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="154" y="120" width="46" height="68" rx="5" fill="#3d5a80"/>
+    <rect x="97" y="112" width="106" height="18" rx="5" fill="#2f4e72"/>
+    <line x1="150" y1="130" x2="150" y2="188" stroke="#2a4468" stroke-width="1.2"/>
+    <path d="M95,196 Q120,190 142,196 L142,202 Q120,206 95,202 Z" fill="#aaaaaa"/>
+    <path d="M158,196 Q180,190 205,196 L205,202 Q180,206 158,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">19</span><span class="badge badge-sport">Sport</span></div>
+    <div class="card-name">RCB Jersey &amp; Blue Jeans</div>
+    <div class="card-pieces">RCB jersey · Blue straight jeans</div>
+    <div class="card-tip">Match day ready. Roll the cuffs for a casual touch.</div>
+  </div>
+</div>
+
+<!-- 20 RCB Jersey + Grey Jeans -->
+<div class="card" data-v="sport" style="animation-delay:.40s">
+  <div class="card-visual"><svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg">
+    <rect width="300" height="210" fill="#120e0e"/>
+    <path d="M86,104 L86,28 L108,12 L150,36 L192,12 L214,28 L214,104 Z" fill="#cc0000"/>
+    <path d="M86,28 L64,82 L88,88 L86,28" fill="#b00000"/>
+    <path d="M214,28 L236,82 L212,88 L214,28" fill="#b00000"/>
+    <path d="M136,28 Q150,52 164,28" fill="none" stroke="#8a0000" stroke-width="2.5"/>
+    <rect x="86" y="64" width="128" height="7" fill="#c9a96e" opacity="0.95"/>
+    <rect x="126" y="72" width="48" height="28" rx="4" fill="#aa0000" opacity="0.6"/>
+    <text x="150" y="91" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#f8eedc" letter-spacing="1.5">RCB</text>
+    <!-- baggy grey jeans -->
+    <rect x="92" y="120" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="154" y="120" width="54" height="68" rx="7" fill="#7a7a7a"/>
+    <rect x="89" y="112" width="122" height="18" rx="5" fill="#6a6a6a"/>
+    <line x1="150" y1="130" x2="150" y2="188" stroke="#5c5c5c" stroke-width="1.2"/>
+    <path d="M87,196 Q118,190 144,196 L144,202 Q118,206 87,202 Z" fill="#aaaaaa"/>
+    <path d="M156,196 Q182,190 213,196 L213,202 Q182,206 156,202 Z" fill="#aaaaaa"/>
+  </svg></div>
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <div class="card-top"><span class="card-num">20</span><span class="badge badge-sport">Sport</span></div>
+    <div class="card-name">RCB Jersey &amp; Grey Jeans</div>
+    <div class="card-pieces">RCB jersey · Grey baggy jeans</div>
+    <div class="card-tip">Relaxed match day look. Sneakers complete it.</div>
+  </div>
+</div>
+
+</div>
+</section>
+
+<footer>
+  <p>20 outfits · 9 wardrobe pieces</p>
+  <em>Dress well, every day.</em>
+</footer>
+
+<script>
+function filter(v, btn) {
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(c => {
+    const show = v === 'all' || c.dataset.v === v;
+    c.classList.toggle('hidden', !show);
+    if (show) { c.style.animationDelay = (visible * 0.035) + 's'; visible++; }
+  });
+  const n = document.querySelectorAll('.card:not(.hidden)').length;
+  const labels = { all: '20 outfits', casual: n+' casual', oldmoney: n+' old money', formal: n+' formal', sport: n+' sport' };
+  document.getElementById('count').textContent = labels[v];
+}
+</script>
+</body>
+</html>
